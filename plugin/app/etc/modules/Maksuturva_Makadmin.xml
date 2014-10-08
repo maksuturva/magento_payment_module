@@ -1,0 +1,13 @@
+<config>
+    <modules>
+        <Maksuturva_Makadmin>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Maksuturva_Makadmin>
+        
+        <translations>
+            <active>true</active>
+            <codepool>local</codepool>
+        </translations>
+    </modules>
+</config>
