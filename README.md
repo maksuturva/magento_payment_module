@@ -1,4 +1,4 @@
-Maksuturva payment module for Magento Community Edition
+Maksuturva Payment Gateway for Magento Community Edition
 ==========================================================
 Copyright (C) 2016 Maksuturva Group Oy
 
