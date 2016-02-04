@@ -30,8 +30,8 @@ If sandbox testing passes but testing with test server fails, the reason most li
 Maksuturva payment service APIs and Integration Guidelines
 -------------------------------
 Instructions and manuals for integration can be found at:
-> Finnish: https://www.maksuturva.fi/fi/ohjeet/palvelun-kayttoonotto/integrointiohjeet-ja-rajapintakuvaukset/
-> English: https://www.maksuturva.fi/en/instructions/getting-started/apis-and-integration-guidelines/
+> Finnish: https://www.maksuturva.fi/fi/ohjeet/palvelun-kayttoonotto/integrointiohjeet-ja-rajapintakuvaukset/  
+English: https://www.maksuturva.fi/en/instructions/getting-started/apis-and-integration-guidelines/
 
 These are found helpful in most cases.
 
