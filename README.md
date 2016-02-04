@@ -18,11 +18,11 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 Contact information:
-Maksuturva Group Oy
-Keilaranta 5
-02150 Espoo
-Finland
-e-mail: info@maksuturva.fi
+    Maksuturva Group Oy
+    Keilaranta 5
+    02150 Espoo
+    Finland
+    e-mail: info@maksuturva.fi
  
 Maksuturva Group Oy, hereby disclaims all copyright interest in
 the library 'Maksuturva payment module' written
