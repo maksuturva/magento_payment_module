@@ -15,8 +15,7 @@ TESTING WITH A TEST ACCOUNT
 ---------------------------
 For testing the module with actual internet bank, credit card, invoice or part payment services, you can order a test account for yourself.
 
-For Maksuturva-service: http://test1.maksuturva.fi/MerchantSubscriptionBeginning.pmt
-For eMaksut-service: http://test1.maksuturva.fi/MerchantSubscriptionBeginning.pmt?emaksut=true
+> http://test1.maksuturva.fi/MerchantSubscriptionBeginning.pmt
 
 When ordering a test account signing the order with your TUPAS bank credentials is not required. When you have completed the order and stored your test account ID and secret key, we kindly ask you to contact us for us to activate the account.
 
@@ -31,12 +30,9 @@ If sandbox testing passes but testing with test server fails, the reason most li
 Maksuturva payment service APIs and Integration Guidelines
 -------------------------------
 Instructions and manuals for integration can be found at:
-Finnish: https://www.maksuturva.fi/fi/ohjeet/palvelun-kayttoonotto/integrointiohjeet-ja-rajapintakuvaukset/
-English: https://www.maksuturva.fi/en/instructions/getting-started/apis-and-integration-guidelines/
+> Finnish: https://www.maksuturva.fi/fi/ohjeet/palvelun-kayttoonotto/integrointiohjeet-ja-rajapintakuvaukset/
+> English: https://www.maksuturva.fi/en/instructions/getting-started/apis-and-integration-guidelines/
 
 These are found helpful in most cases.
 
-Suomen Maksuturva Oy
-18.3.2013
-
-
+Maksuturva Group Oy
