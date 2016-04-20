@@ -147,11 +147,11 @@ It is always recommended to do this in test environment first before upgrading i
 ### Split submethods to separate Magento payment methods
 
 When using payment method preselection in checkout, instead of standard dropdown selection the methods can be split into
-separate Magento payment methods. This is not officially supported, because it requires a core patch and defining own modes.
+separate Magento payment methods. This is not officially supported, because it requires a core patch and defining customer specific models.
 Split methods also have the drawback of being non-dynamic: if Maksuturva adds or removes methods later on, it will require
 changes to customer specific implementation.
 
-Split off methods are configured as standard Magento payment methods with code example "maksuturva_fi50". The method should have it's own model
+Split-off methods are configured as standard Magento payment methods with a custom format method code, eg. "maksuturva_fi50". The method should have it's own model
 which extends Maksuturva's model. Example of this can be found from optional/example_split_method_model.php. The methods can have their own block,
 in case customized template or logic is needed.
 
