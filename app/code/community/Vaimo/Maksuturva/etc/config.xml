@@ -96,7 +96,6 @@
                 <commurl>https://www.maksuturva.fi/</commurl>
                 <commencoding>UTF-8</commencoding>
                 <sandboxmode>1</sandboxmode>
-                <emaksut>0</emaksut>
                 <preselect_payment_method>0</preselect_payment_method>
                 <preselect_paymentfee/>
                 <cron_active>0</cron_active>

@@ -21,7 +21,6 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
     private $sellerId = "";
     private $order = null;
     private $form = null;
-    protected $eMaksut;
     protected $preSelectPaymentMethod;
     protected $helper;
 
@@ -33,7 +32,6 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
         $this->commEncoding = $config['commencoding'];
         $this->paymentDue = $config['paymentdue'];
         $this->keyVersion = $config['keyversion'];
-        $this->eMaksut = $config['emaksut'];
         $this->preSelectPaymentMethod = $config['preselect_payment_method'];
         $this->helper = Mage::helper('maksuturva');
 
@@ -326,8 +324,8 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
             }
             $options["pmt_buyeremail"] = ($order->getCustomerEmail() ? $order->getCustomerEmail() : 'empty@email.com');
 
-            // emaksut
-            $options["pmt_escrow"] = ($this->eMaksut ? "Y" : "N");
+            // emaksut, deprecated feature
+            $options["pmt_escrow"] = "N";
 
             // Delivery information
             $options["pmt_deliveryname"] = ($order->getShippingAddress() ? $order->getShippingAddress()->getName() : '');

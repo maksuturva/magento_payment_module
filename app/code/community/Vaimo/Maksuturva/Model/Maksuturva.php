@@ -80,7 +80,6 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
         $config = array(
             'sandbox' => intval($this->getConfigData('sandboxmode')),
             'commencoding' => $this->getConfigData('commencoding'),
-            'emaksut' => intval($this->getConfigData('emaksut')),
             'paymentdue' => intval($this->getConfigData('paymentdue')),
             'keyversion' => $this->getConfigData('keyversion'),
             'preselect_payment_method' => $this->getConfigData('preselect_payment_method'),

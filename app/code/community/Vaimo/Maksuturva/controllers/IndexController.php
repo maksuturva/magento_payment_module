@@ -76,7 +76,7 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
         // validate amounts, values, etc
         // fields which will be ignored
         $form = $implementation->getForm();
-        $ignore = array("pmt_hash", "pmt_paymentmethod", "pmt_reference", "pmt_sellercosts");
+        $ignore = array("pmt_hash", "pmt_escrow", "pmt_paymentmethod", "pmt_reference", "pmt_sellercosts");
         foreach ($values as $key => $value) {
             // just pass if ignore is on
             if (in_array($key, $ignore)) {

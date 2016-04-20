@@ -28,9 +28,6 @@ At this moment the module does not alter Magento's database schema in any way or
 
 Configuration for the module can be found from standard location under *System -> Configuration -> Payment Methods -> Maksuturva*.
 
-##### eMaksut (escrow)
-This parameter provided by Maksuturva. Controls if escrow flag is enabled or not. Usually changing this is not needed, and this might be deprecated in future.
-
 ##### Sandbox mode
 If enabled, communication url, seller id and secret key in sandbox fields are used, otherwise production parameters are used.
 

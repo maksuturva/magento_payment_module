@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
 
 /**
  * Example block definition to set custom template for split payment method

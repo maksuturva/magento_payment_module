@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
 
 /**
  * Example model to filter and set custom block for split payment method
@@ -10,6 +14,7 @@
 class Vaimo_Customermodule_Model_Maksuturva_Fi01 extends Vaimo_Maksuturva_Model_Maksuturva
 {
     protected $_code = 'maksuturva_fi01';
+
     // use for custom block template & logic
     protected $_formBlockType = 'customermodule/maksuturva_bank';
     // use for Magento default style radio button
