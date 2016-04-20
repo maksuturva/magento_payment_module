@@ -1,0 +1,25 @@
+--- app/code/core/Mage/Checkout/Block/Onepage/Payment/Methods.php.orig	2016-03-11 16:55:21.000000000 +0100
++++ app/code/core/Mage/Checkout/Block/Onepage/Payment/Methods.php	2016-03-11 17:01:58.000000000 +0100
+@@ -57,6 +57,22 @@
+      */
+     public function getSelectedMethodCode()
+     {
++        try {
++            $methodInstance = $this->getQuote()->getPayment()->getMethodInstance();
++        } catch (Exception $e) {
++            $methodInstance = null;
++        }
++
++        if ($methodInstance instanceof Vaimo_Maksuturva_Model_Maksuturva) {
++            $payment = $this->getQuote()->getPayment();
++            $additional_data = unserialize($payment->getAdditionalData());
++            if (isset($additional_data[Vaimo_Maksuturva_Model_Maksuturva::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD])) {
++                $subMethod = $additional_data[Vaimo_Maksuturva_Model_Maksuturva::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD];
++
++                return "maksuturva_" . strtolower($subMethod);
++            }
++        }
++
+         if ($method = $this->getQuote()->getPayment()->getMethod()) {
+             return $method;
+         }

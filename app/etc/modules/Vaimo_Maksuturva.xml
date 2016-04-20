@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
+ -->
+<config>
+    <modules>
+        <Vaimo_Maksuturva>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Vaimo_Maksuturva>
+    </modules>
+</config>

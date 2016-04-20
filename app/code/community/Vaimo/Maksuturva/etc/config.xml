@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
+ -->
+<config>
+    <modules>
+        <Vaimo_Maksuturva>
+            <version>2.0.0</version>
+        </Vaimo_Maksuturva>
+    </modules>
+    <global>
+        <blocks>
+            <maksuturva>
+                <class>Vaimo_Maksuturva_Block</class>
+            </maksuturva>
+        </blocks>
+        <models>
+            <maksuturva>
+                <class>Vaimo_Maksuturva_Model</class>
+            </maksuturva>
+        </models>
+        <helpers>
+            <maksuturva>
+                <class>Vaimo_Maksuturva_Helper</class>
+            </maksuturva>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <maksuturva>
+                <use>standard</use>
+                <args>
+                    <module>Vaimo_Maksuturva</module>
+                    <frontName>maksuturva</frontName>
+                </args>
+            </maksuturva>
+        </routers>
+        <events>
+            <sales_quote_payment_import_data_before>
+                <observers>
+                    <maksuturva_set_preselected_method>
+                        <class>maksuturva/observer</class>
+                        <method>setPreselectedMethod</method>
+                    </maksuturva_set_preselected_method>
+                </observers>
+            </sales_quote_payment_import_data_before>
+        </events>
+        <translate>
+            <modules>
+                <maksuturva>
+                    <files>
+                        <default>Vaimo_Maksuturva.csv</default>
+                    </files>
+                </maksuturva>
+            </modules>
+        </translate>
+    </frontend>
+    <crontab>
+        <jobs>
+            <!-- query payment success every hour shortly after payment -->
+            <maksuturva_payment_check_short>
+                <schedule>
+                    <cron_expr>10 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>maksuturva/cron::checkPaymentStatus</model>
+                </run>
+                <lookback><![CDATA[-2 hours]]></lookback>
+            </maksuturva_payment_check_short>
+            <!-- query payment success once per day for orders where payment could wait for actual funds transfer from bank (under 1% cases) -->
+            <maksuturva_payment_check_long>
+                <schedule>
+                    <cron_expr>40 7 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>maksuturva/cron::checkPaymentStatus</model>
+                </run>
+                <lookback><![CDATA[-7 days]]></lookback>
+            </maksuturva_payment_check_long>
+        </jobs>
+    </crontab>
+    <default>
+        <payment>
+            <maksuturva>
+                <active>0</active>
+                <model>maksuturva/maksuturva</model>
+                <order_status>pending</order_status>
+                <title>Maksuturva</title>
+                <payment_action>sale</payment_action>
+                <allowspecific>0</allowspecific>
+                <keyversion>001</keyversion>
+                <paymentdue>0</paymentdue>
+                <commurl>https://www.maksuturva.fi/</commurl>
+                <commencoding>UTF-8</commencoding>
+                <sandboxmode>1</sandboxmode>
+                <emaksut>0</emaksut>
+                <preselect_payment_method>0</preselect_payment_method>
+                <preselect_paymentfee/>
+                <cron_active>0</cron_active>
+                <test_sellerid>testikauppias</test_sellerid>
+                <test_secretkey>11223344556677889900</test_secretkey>
+                <test_commurl>https://www.maksuturva.fi/</test_commurl>
+            </maksuturva>
+        </payment>
+    </default>
+</config>

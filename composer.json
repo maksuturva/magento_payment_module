@@ -1,0 +1,23 @@
+{
+    "name": "vaimo/maksuturva",
+    "type": "magento-module",
+    "description": "Vaimo_Maksuturva",
+    "license": "bsd",
+    "authors": [
+        {
+            "name": "Paavo Pokkinen",
+            "email": "paavo.pokkinen@vaimo.com"
+        }
+    ],
+    "require": {
+        "vaimo/magento": "*",  
+        "magento-hackathon/magento-composer-installer": "*" 
+    },
+    "extra": {
+        "vaimo-module-category": "Payment"
+    },
+    "conflict": {
+        "maksuturva/maksuturva": "*",
+        "maksuturva/makadmin": "*"
+    }
+}

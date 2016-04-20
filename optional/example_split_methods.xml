@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+/**
+* Copyright (c) 2009-2014 Vaimo AB
+*
+* Vaimo reserves all rights in the Program as delivered. The Program
+* or any portion thereof may not be reproduced in any form whatsoever without
+* the written consent of Vaimo, except as provided by licence. A licence
+* under Vaimo's rights in the Program may be available directly from
+* Vaimo.
+*
+* Disclaimer:
+* THIS NOTICE MAY NOT BE REMOVED FROM THE PROGRAM BY ANY USER THEREOF.
+* THE PROGRAM IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+* THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE PROGRAM OR THE USE OR OTHER DEALINGS
+* IN THE PROGRAM.
+*
+* @category    Vaimo
+* @package     Vaimo_Module
+* @copyright   Copyright (c) 2009-2014 Vaimo AB
+*/
+-->
+<!--
+
+Example configuration for split payment methods
+
+The main maksuturva method should be kept active all times. Default template form_select.phtml can be overridden by
+empty file, if all methods are wanted as separate. In addition to this original method needs to be hidden on checkout by css.
+
+It is also possible to split off certain methods, and keep eg. banks in default dropbown.
+
+-->
+<config>
+    <default>
+        <payment>
+            <maksuturva_fi01>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi01</model>
+                <title>Nordea</title>
+                <sort_order>1</sort_order>
+            </maksuturva_fi01>
+            <maksuturva_fi02>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi02</model>
+                <title>Danske Bank</title>
+                <sort_order>2</sort_order>
+            </maksuturva_fi02>
+            <maksuturva_fi03>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi03</model>
+                <title>Aktia</title>
+                <sort_order>3</sort_order>
+            </maksuturva_fi03>
+            <maksuturva_fi04>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi04</model>
+                <title>POP</title>
+                <sort_order>4</sort_order>
+            </maksuturva_fi04>
+            <maksuturva_fi06>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi06</model>
+                <title>Osuuspankki</title>
+                <sort_order>6</sort_order>
+            </maksuturva_fi06>
+            <maksuturva_fi07>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi07</model>
+                <title>Ålandsbanken</title>
+                <sort_order>7</sort_order>
+            </maksuturva_fi07>
+            <maksuturva_fi08>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi08</model>
+                <title>Säästöpankki</title>
+                <sort_order>8</sort_order>
+            </maksuturva_fi08>
+            <maksuturva_fi09>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi09</model>
+                <title>Handelsbanken</title>
+                <sort_order>9</sort_order>
+            </maksuturva_fi09>
+            <maksuturva_fi10>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi10</model>
+                <title>S-Pankki</title>
+                <sort_order>10</sort_order>
+            </maksuturva_fi10>
+            <maksuturva_fi50>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi50</model>
+                <title>Luottokortti</title>
+                <sort_order>70</sort_order>
+            </maksuturva_fi50>
+            <maksuturva_fi70>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi70</model>
+                <title>Svea lasku</title>
+                <sort_order>80</sort_order>
+            </maksuturva_fi70>
+            <maksuturva_fi71>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi71</model>
+                <title>Svea osamaksu</title>
+                <sort_order>99</sort_order>
+            </maksuturva_fi71>
+            <maksuturva_fi72>
+                <active>1</active>
+                <model>customermodule/maksuturva_fi72</model>
+                <title>Svea yrityslasku</title>
+                <sort_order>90</sort_order>
+            </maksuturva_fi72>
+        </payment>
+    </default>
+</config>

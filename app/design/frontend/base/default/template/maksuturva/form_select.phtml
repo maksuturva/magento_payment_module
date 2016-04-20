@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
+?>
+
+<?php
+$paymentMethods = $this->getPaymentMethods();
+$selectedMethod = $this->getSelectedMethod();
+?>
+
+<?php if ($paymentMethods && count($paymentMethods) > 0): ?>
+    <fieldset class="form-list">
+        <?php $_code = $this->getMethodCode() ?>
+        <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+            <li>
+                <select id="maksuturva_payment_method" class="validate-select"
+                        name="payment[maksuturva_preselected_payment_method]">
+                    <option value=""><?php echo __("Choose payment method..."); ?></option>
+                    <?php foreach ($paymentMethods as $method): ?>
+                        <option
+                            value="<?php echo $method->code ?>" <?php echo $method->code == $selectedMethod ? 'selected' : '' ?>><?php echo $method->displayname; ?></option>
+                    <?php endforeach ?>
+                </select>
+            </li>
+        </ul>
+    </fieldset>
+
+    <?php if ($this->isQuickCheckoutActive()): ?>
+        <script type="text/javascript">
+            Event.observe($("maksuturva_payment_method"), 'change', function () {
+                quickCheckout.showReviewLoader();
+                quickCheckout.savePaymentMethod();
+            });
+        </script>
+    <?php endif ?>
+<?php endif ?>
