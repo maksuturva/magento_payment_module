@@ -6,6 +6,9 @@
  */
 class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
 {
+    const FORMTYPE_DROPDOWN = 0;
+    const FORMTYPE_ICONS = 1;
+
     /**
      * Set template and redirect message
      */
@@ -23,7 +26,17 @@ class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
                     throw new Exception("paymentfee configured but module Vaimo_PaymentFee not active!");
                 }
             }
-            $this->setTemplate('maksuturva/form_select.phtml');
+
+            switch ($this->getFormType()) {
+                case self::FORMTYPE_DROPDOWN:
+                    $this->setTemplate('maksuturva/form_select.phtml');
+                    break;
+                case self::FORMTYPE_ICONS:
+                    $this->setTemplate('maksuturva/form_icons.phtml');
+                    break;
+                default:
+                    throw new Exception('unknown form type');
+            }
         }
     }
 
@@ -47,4 +60,13 @@ class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
         return Mage::helper('core')->isModuleEnabled('Icommerce_QuickCheckout');
     }
 
+    /**
+     * Get payment form type
+     *
+     * @return string
+     */
+    public function getFormType()
+    {
+        return $this->getMethod()->getConfigData('preselect_form_type');
+    }
 }

@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
+?>
+
+<?php
+$paymentMethods = $this->getPaymentMethods();
+$selectedMethod = $this->getSelectedMethod();
+?>
+
+<?php if ($paymentMethods && count($paymentMethods) > 0): ?>
+    <fieldset class="form-list">
+        <?php $_code = $this->getMethodCode() ?>
+        <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+
+            <?php foreach ($paymentMethods as $method): ?>
+                <li class="payment-method">
+                    <label for="maksuturva_<?php echo $method->code ?>">
+                        <img src="<?php echo $method->imageurl ?>" alt="<?php echo $method->displayname ?>"/>
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="radio" class="radio maksuturva-radio" id="maksuturva_<?php echo $method->code ?>"
+                               name="payment[maksuturva_preselected_payment_method]"
+                               value="<?php echo $method->code ?>" <?php echo $method->code == $selectedMethod ? 'checked="checked"' : '' ?>>
+                    </div>
+                </li>
+            <?php endforeach ?>
+
+        </ul>
+    </fieldset>
+
+    <?php if ($this->isQuickCheckoutActive()): ?>
+        <script type="text/javascript">
+            $('payment_method_maksuturva').on('change', '.maksuturva-radio', function () {
+                quickCheckout.showReviewLoader();
+                quickCheckout.savePaymentMethod();
+            });
+        </script>
+    <?php endif ?>
+
+    <script>
+        "use strict";
+        $('payment_form_maksuturva').on("click", ".maksuturva-radio", function (event) {
+            var element = $(event.target);
+            var parentLi = element.up(".payment-method");
+            var selectedEl = $('payment_form_maksuturva').select('.payment-method.selected');
+
+            //reset selected state.
+            if (selectedEl.length > 0) {
+                selectedEl.forEach(function (el) {
+                    el.removeClassName("selected")
+                });
+            }
+
+            if (element.checked) {
+                parentLi.addClassName("selected");
+            }
+        })
+    </script>
+<?php endif ?>
+

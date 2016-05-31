@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * See LICENSE.txt for license details.
+ */
+ -->
+<layout version="0.1.0">
+     <checkout_onepage_index>
+         <reference name="head">
+             <action method="addItem" ifconfig="payment/maksuturva/preselect_form_type">
+                 <type>skin_css</type>
+                 <name>css/maksuturva.css</name>
+                 <group>checkout</group>
+             </action>
+         </reference>
+     </checkout_onepage_index>
+</layout>

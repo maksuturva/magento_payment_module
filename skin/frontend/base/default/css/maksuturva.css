@@ -1,0 +1,47 @@
+#payment_form_maksuturva li {
+    display: inline-block;
+    height: 102px;
+    border-radius: 2px;
+    border: 1px solid #D0D0D0;
+    text-align: center;
+}
+
+/* selected state */
+#payment_form_maksuturva .payment-method.selected {
+    border: 1px solid #42AE36;
+}
+
+#payment_form_maksuturva label {
+    display: inline-block;
+    width: auto;
+    height: 80px;
+}
+
+#payment_form_maksuturva label img {
+    height: 100%;
+    display: inline-block;
+}
+
+#payment_form_maksuturva .input-wrapper {
+    background-color: #DCDCDC;
+    display: inline-block;
+    height: 16px;
+    width: 100%;
+    position: relative;
+}
+
+#payment_form_maksuturva .selected .input-wrapper {
+    background-color: #42AE36;
+}
+
+#payment_form_maksuturva .input-wrapper input[type=radio] {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate3D(-50%, -50%, 0);
+    -moz-transform: translate3D(-50%, -50%, 0);
+    -ms-transform: translate3D(-50%, -50%, 0);
+    -o-transform: translate3D(-50%, -50%, 0);
+    transform: translate3D(-50%, -50%, 0);
+}

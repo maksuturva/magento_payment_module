@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Vaimo_Maksuturva>
-            <version>2.0.1</version>
+            <version>2.1.0</version>
         </Vaimo_Maksuturva>
     </modules>
     <global>
@@ -57,6 +57,13 @@
                 </maksuturva>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <maksuturva>
+                    <file>vaimo_maksuturva.xml</file>
+                </maksuturva>
+            </updates>
+        </layout>
     </frontend>
     <crontab>
         <jobs>
@@ -102,6 +109,7 @@
                 <test_sellerid>testikauppias</test_sellerid>
                 <test_secretkey>11223344556677889900</test_secretkey>
                 <test_commurl>https://www.maksuturva.fi/</test_commurl>
+                <preselect_form_type>0</preselect_form_type>
             </maksuturva>
         </payment>
     </default>
