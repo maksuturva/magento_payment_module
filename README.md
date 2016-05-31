@@ -48,7 +48,7 @@ Specifies which encoding is used. Will be deprecated in future, and only UTF8 wi
 
 ##### Preselect payment method in webshop
 
-Enables selection of Maksuturva payment method directly on Magento checkout by dropdown selector, instead of redirecting to Maksuturva service and selecting it there.
+Enables selection of Maksuturva payment method directly on Magento checkout, instead of redirecting to Maksuturva service and selecting it there.
 List of allowed payment methods are fetched from Maksuturva API based on cart total. Certain methods like part payment might be available only when cart
 total exceed the configured limit.
 
@@ -150,8 +150,8 @@ It is always recommended to do this in test environment first before upgrading i
 
 ### Split submethods to separate Magento payment methods
 
-When using payment method preselection in checkout, instead of standard dropdown selection the methods can be split into
-separate Magento payment methods. This is not officially supported, because it requires a core patch and defining customer specific models.
+When using payment method preselection in checkout, Maksuturva sub-methods can be split into
+separate Magento payment methods, with each method being it's own payment method from user perspective. This is not officially supported, because it requires a core patch and defining customer specific models.
 Split methods also have the drawback of being non-dynamic: if Maksuturva adds or removes methods later on, it will require
 changes to customer specific implementation.
 
@@ -164,7 +164,7 @@ When user uses split method, on backend the code will still always be "maksuturv
 Splitting of methods requires applying supplied patch under optional/patches/getSelectedSubMethodCode.patch. The patch will modify core
 to return selected sub-method code (eg. maksuturva_fi50 instead of just maksuturva). The patch handles the use-case when user goes back on checkout
 steps, otherwise the selected sub-method would stay selected. This assumes all methods are split off from default
-dropdown. If this is not the case, the patch needs modification to filter the codes split off.
+selection. If this is not the case, the patch needs modification to filter the codes split off.
 
 ## Contribution guidelines
 
