@@ -52,11 +52,11 @@ Enables selection of Maksuturva payment method directly on Magento checkout, ins
 List of allowed payment methods are fetched from Maksuturva API based on cart total. Certain methods like part payment might be available only when cart
 total exceed the configured limit.
 
+Please note that this service needs to be enabled by Maksuturva first.
+
 ##### Preselect form type
 
 Specifies which styling is used on preselection form on checkout. Option to use either basic dropdown or stylished payment icons.
-
-Please note that this service needs to be enabled by Maksuturva first.
 
 ###### Payment fees
 
