@@ -34,3 +34,6 @@
 "Verify Payment","Hae maksun tila"
 "Unable cancel order that is already paid.","Tilausta ei voitu perua koska se on jo maksettu."
 "Choose payment method...","Valitse maksutapa..."
+"Your order is already authorized.","Tilauksesi on jo hyväksytty."
+"Your order is already paid.","Tilauksesi on jo maksettu."
+"Your order is not valid.","Tilaustasi ei ole olemassa."

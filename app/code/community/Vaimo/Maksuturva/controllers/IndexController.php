@@ -73,8 +73,18 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
         }
 
         $implementation->setOrder($order);
+        if (!$order->getId()) {
+            Mage::getSingleton('core/session')->addError($this->__('Your order is not valid.'));
+            $this->_redirect('checkout/cart');
+            return;
+        }
         if (!$order->canInvoice()) {
-            Mage::getSingleton('core/session')->addError($this->__('Your order is not valid or is already paid.'));
+            Mage::getSingleton('core/session')->addSuccess($this->__('Your order is already paid.'));
+            $this->_redirect('checkout/cart');
+            return;
+        }
+        if ($order->getState() != Mage_Sales_Model_Order::STATE_PENDING_PAYMENT) {
+            Mage::getSingleton('core/session')->addSuccess($this->__('Your order is already authorized.'));
             $this->_redirect('checkout/cart');
             return;
         }
@@ -100,23 +110,22 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             return;
         }
 
-        if ($order->getId()) {
+        $isDelayedCapture = $method->isDelayedCaptureCase($values['pmt_paymentmethod']);
+        $statusText = $isDelayedCapture ? "authorized" : "captured";
 
-            $isDelayedCapture = $method->isDelayedCaptureCase($values['pmt_paymentmethod']);
-            $statusText = $isDelayedCapture ? "authorized" : "captured";
-
-            //if sellercosts have increased, eg. for part payment, a comment is added to the order history
-            if ($form->{'pmt_sellercosts'} != $values['pmt_sellercosts']) {
-                $sellercosts_change = $values['pmt_sellercosts'] - $form->{'pmt_sellercosts'};
-                if ($sellercosts_change > 0) {
-                    $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts + {$sellercosts_change} EUR.");
-                } else {
-                    $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts {$sellercosts_change} EUR.");
-                }
+        //if sellercosts have increased, eg. for part payment, a comment is added to the order history
+        if ($form->{'pmt_sellercosts'} != $values['pmt_sellercosts']) {
+            $sellercosts_change = $values['pmt_sellercosts'] - $form->{'pmt_sellercosts'};
+            if ($sellercosts_change > 0) {
+                $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts + {$sellercosts_change} EUR.");
             } else {
-                $msg = $this->__("Payment {$statusText} by Maksuturva");
+                $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts {$sellercosts_change} EUR.");
             }
+        } else {
+            $msg = $this->__("Payment {$statusText} by Maksuturva");
+        }
 
+        try {
             if (!$isDelayedCapture) {
                 $this->_createInvoice($order);
             }
@@ -143,11 +152,11 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             }
 
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
-
-            return;
+        } catch (Exception $e) {
+            $this->_redirect('maksuturva/index/error', array('type' => 9999));
         }
 
-        $this->_redirect('maksuturva/index/error', array('type' => 9999));
+        return;
     }
 
     /**

@@ -1,5 +1,10 @@
 # Change Log
 
+### 2.2.1
+
+  * Fixed duplicate authorizations in delayed capture case when using "status OK" callback by adding check for order status
+  * Improved error messages on success controller
+
 ### 2.2.0
 
   * Marked cron polling functionality as deprecated (still works as earlier).
