@@ -3,6 +3,8 @@
 /**
  * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
  * See LICENSE.txt for license details.
+ *
+ * @deprecated Will be removed in future
  */
 class Vaimo_Maksuturva_Model_Cron
 {

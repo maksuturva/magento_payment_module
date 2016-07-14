@@ -20,7 +20,8 @@ It is also strongly recommended to do installation first in development environm
 1. Extract the module files under Magento installation
 2. Clean Magento cache
 3. Configure the module
-4. Verify the payments work
+4. **Ask Maksuturva to enable _"status OK"_ callback to Magento.** This is important to catch situations where customer fails to return to Magento after succesful payment.
+5. Verify the payments work
 
 At this moment the module does not alter Magento's database schema in any way or create any custom database tables.
 
@@ -79,12 +80,12 @@ The methods are given as comma separated list, example:
 code1,code2,code3
 ```
 
-##### Query Maksuturva API for orders missing payments
+##### Query Maksuturva API for orders missing payments (deprecated)
 
 If enabled, will enable cronjob that queries Maksuturva API for order missing payment. This kind of orders might
 occasionally happen, if after successful payment customer does not return to webshop.
 
-It is recommended to enable this.
+Deprecated since 2.2.0 and should be disabled. Alternative and better way is to ask Maksuturva to enabled _"status OK"_ callback to Magento.
 
 ## Sandbox testing
 

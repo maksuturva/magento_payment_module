@@ -293,6 +293,7 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
                 $pmt_id = Mage::helper('maksuturva')->generatePaymentId();
                 $additional_data[Vaimo_Maksuturva_Model_Maksuturva::MAKSUTURVA_TRANSACTION_ID] = $pmt_id;
                 $payment->setAdditionalData(serialize($additional_data));
+                $payment->setMaksuturvaPmtId($pmt_id);
                 $payment->save();
             }
 
@@ -377,9 +378,9 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
 
         $xml = simplexml_load_string($response);
         $obj = json_decode(json_encode($xml));
-
+        
         if (isset($obj->paymentmethod)) {
-            return $obj->paymentmethod;
+            return isset($obj->paymentmethod->code) ? array($obj->paymentmethod) : $obj->paymentmethod;
         } else {
             return false;
         }

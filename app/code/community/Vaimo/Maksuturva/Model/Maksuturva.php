@@ -262,7 +262,7 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
                 $title = $additional_data[self::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD_DESCRIPTION];
             }
 
-            return ($title) ? $title : $this->getConfigData('title');
+            return (isset($title)) ? $title : $this->getConfigData('title');
         } else {
             return $this->getConfigData('title');
         }

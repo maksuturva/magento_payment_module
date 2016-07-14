@@ -37,6 +37,8 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function successAction()
     {
+        /** @var Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('checkout/session');
         $params = $this->getRequest()->getParams();
 
         //Validate parameters
@@ -61,10 +63,14 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             return;
         }
 
-        /** @var Mage_Checkout_Model_Session $session */
-        $session = Mage::getSingleton('checkout/session');
+        $payment = Mage::getModel('sales/order_payment')->load($values['pmt_id'], 'maksuturva_pmt_id');
         /** @var Mage_Sales_Model_Order $order */
-        $order = $session->getLastRealOrder();
+        $order = Mage::getModel('sales/order')->load($payment->getParentId());
+
+        // Fallback for old method, will be removed in future
+        if (!$order->getId()) {
+            $order = $session->getLastRealOrder();
+        }
 
         $implementation->setOrder($order);
         if (!$order->canInvoice()) {
@@ -94,52 +100,51 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             return;
         }
 
-        if ($session->getLastRealOrderId()) {
+        if ($order->getId()) {
 
-            if ($order->getId()) {
+            $isDelayedCapture = $method->isDelayedCaptureCase($values['pmt_paymentmethod']);
+            $statusText = $isDelayedCapture ? "authorized" : "captured";
 
-                $isDelayedCapture = $method->isDelayedCaptureCase($values['pmt_paymentmethod']);
-                $statusText = $isDelayedCapture ? "authorized" : "captured";
-
-                //if sellercosts have increased, eg. for part payment, a comment is added to the order history
-                if ($form->{'pmt_sellercosts'} != $values['pmt_sellercosts']) {
-                    $sellercosts_change = $values['pmt_sellercosts'] - $form->{'pmt_sellercosts'};
-                    if ($sellercosts_change > 0) {
-                        $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts + {$sellercosts_change} EUR.");
-                    } else {
-                        $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts {$sellercosts_change} EUR.");
-                    }
+            //if sellercosts have increased, eg. for part payment, a comment is added to the order history
+            if ($form->{'pmt_sellercosts'} != $values['pmt_sellercosts']) {
+                $sellercosts_change = $values['pmt_sellercosts'] - $form->{'pmt_sellercosts'};
+                if ($sellercosts_change > 0) {
+                    $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts + {$sellercosts_change} EUR.");
                 } else {
-                    $msg = $this->__("Payment {$statusText} by Maksuturva");
+                    $msg = $this->__("Payment {$statusText} by Maksuturva. NOTE: Change in the sellercosts {$sellercosts_change} EUR.");
                 }
-
-                if (!$isDelayedCapture) {
-                    $this->_createInvoice($order);
-                }
-
-                if (!$order->getEmailSent()) {
-                    try {
-                        $order->sendNewOrderEmail();
-                        $order->setEmailSent(true);
-                    } catch (Exception $e) {
-                        Mage::logException($e);
-                    }
-                }
-
-                $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $msg, false);
-                $order->save();
-
-                // Support for Vaimo Order module
-                Mage::dispatchEvent("ic_order_success", array("order" => $order));
-
-                /* @var $quote Mage_Sales_Model_Quote */
-                $quote = $session->getQuote();
-                $quote->setIsActive(false)->save();
-
-                $this->_redirect('checkout/onepage/success', array('_secure' => true));
-
-                return;
+            } else {
+                $msg = $this->__("Payment {$statusText} by Maksuturva");
             }
+
+            if (!$isDelayedCapture) {
+                $this->_createInvoice($order);
+            }
+
+            if (!$order->getEmailSent()) {
+                try {
+                    $order->sendNewOrderEmail();
+                    $order->setEmailSent(true);
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
+
+            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $msg, false);
+            $order->save();
+
+            // Support for Vaimo Order module
+            Mage::dispatchEvent("ic_order_success", array("order" => $order));
+
+            /* @var $quote Mage_Sales_Model_Quote */
+            $quote = $session->getQuote();
+            if ($quote->getId()) {
+                $quote->setIsActive(false)->save();
+            }
+
+            $this->_redirect('checkout/onepage/success', array('_secure' => true));
+
+            return;
         }
 
         $this->_redirect('maksuturva/index/error', array('type' => 9999));
