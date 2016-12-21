@@ -7,8 +7,9 @@ This is Maksuturva's official Magento 1.x payment gateway module. The module is 
 The Maksuturva Payment Gateway module for Magento was tested on and requires the following set of applications in order to fully work:
 
 * Magento 1.5.x - 1.9.x or Magento EE 1.14.x
-* PHP version 4 or 5
+* PHP version at least 5.1.0
 * PHP cURL support
+* PHP libxml support
 
 There is no guarantee that the module is fully functional in any other environment which does not fulfill the requirements.
 
