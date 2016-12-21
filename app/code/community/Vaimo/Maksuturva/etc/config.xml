@@ -38,6 +38,15 @@
                 </connection>
             </vaimo_maksuturva_setup>
         </resources>
+        <template>
+            <email>
+                <payment_maksuturva_settled_email_template translate="label" module="Vaimo_Maksuturva">
+                    <label>Maksuturva Cancel Settled Payment</label>
+                    <file>maksuturva_settled_email.html</file>
+                    <type>html</type>
+                </payment_maksuturva_settled_email_template>
+            </email>
+        </template>
     </global>
     <frontend>
         <routers>
@@ -121,6 +130,11 @@
                 <test_secretkey>11223344556677889900</test_secretkey>
                 <test_commurl>https://www.maksuturva.fi/</test_commurl>
                 <preselect_form_type>0</preselect_form_type>
+                <can_cancel_settled>0</can_cancel_settled>
+                <enable_payment_information_email>0</enable_payment_information_email>
+                <settled_sender_email_identity>general</settled_sender_email_identity>
+                <settled_recipient_email><![CDATA[hello@example.com]]></settled_recipient_email>
+                <settled_email_template>payment_maksuturva_settled_email_template</settled_email_template>
             </maksuturva>
         </payment>
     </default>

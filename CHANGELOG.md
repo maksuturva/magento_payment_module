@@ -1,5 +1,14 @@
 # Change Log
 
+### 2.3.0
+
+  * Changed the requested captures case to be online for all captures to allow online refunding.
+  * Implemented refunding for non-settled payments and settled payments
+
+### 2.2.2
+
+  * Fix: Correct pmt_buyeremail max value
+
 ### 2.2.1
 
   * Fixed duplicate authorizations in delayed capture case when using "status OK" callback by adding check for order status

@@ -19,8 +19,9 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
     protected $_isGateway = true;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
-    protected $_canCapturePartial = false;
-    protected $_canRefund = false;
+    protected $_canCapturePartial = true;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
     protected $_canVoid = false;
     protected $_canUseInternal = false;
     protected $_canUseCheckout = true;
@@ -289,10 +290,25 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
             $result = $this->getGatewayImplementation()->addDeliveryInfo($payment);
 
             $payment->setTransactionId($result['pkg_id']);
-            $payment->setIsTransactionClosed(1);
+            $payment->setIsTransactionClosed(0);
             $payment->setTransactionAdditionalInfo(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $result);
         }
 
         return $this;
     }
+
+    public function refund(Varien_Object $payment, $amount)
+    {
+        if (!$this->canRefund()) {
+            Mage::throwException(Mage::helper('payment')->__('Refund action is not available.'));
+        }
+
+        $this->getGatewayImplementation()
+            ->changePaymentTransaction($payment, $amount);
+
+        return $this;
+
+    }
+
+
 }

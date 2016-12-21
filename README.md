@@ -87,6 +87,17 @@ occasionally happen, if after successful payment customer does not return to web
 
 Deprecated since 2.2.0 and should be disabled. Alternative and better way is to ask Maksuturva to enabled _"status OK"_ callback to Magento.
 
+##### Enable settled cancellation
+
+Allow cancellation of payments, which are already settled. This will be attempted if payment is already settled and can't
+be refunded normally. Requires already settled amount to be paid back to Maksuturva, which will then refund the customer.
+
+##### Send refund payment information with email
+
+Send email containing information for paying back the settled amount of payment to Maksuturva. You can give email sender, 
+recipients, and custom email template.
+
+
 ## Sandbox testing
 
 Most simple way to test the payment module is to switch the Sandbox / Testing mode on. In the 

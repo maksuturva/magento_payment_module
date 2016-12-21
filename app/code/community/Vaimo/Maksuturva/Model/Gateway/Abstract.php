@@ -32,6 +32,13 @@ abstract class Vaimo_Maksuturva_Model_Gateway_Abstract extends Mage_Core_Model_A
     const EXCEPTION_CODE_PHP_CURL_NOT_INSTALLED = '06';
     const EXCEPTION_CODE_HASHES_DONT_MATCH = '07';
 
+    const PAYMENT_CANCEL_OK = "00";
+    const PAYMENT_CANCEL_NOT_FOUND = "20";
+    const PAYMENT_CANCEL_ALREADY_SETTLED = "30";
+    const PAYMENT_CANCEL_MISMATCH = "31";
+    const PAYMENT_CANCEL_ERROR = "90";
+    const PAYMENT_CANCEL_FAILED = "99";
+
     const PAYMENT_SERVICE_URN = 'NewPaymentExtended.pmt';
 
     protected $_secretKey = null;
@@ -193,6 +200,131 @@ abstract class Vaimo_Maksuturva_Model_Gateway_Abstract extends Mage_Core_Model_A
         }
 
         return true;
+    }
+
+    /**
+     * Parse received response and verify it
+     *
+     * @param $response Response to be parsed & verified
+     *
+     * @return array Parsed response
+     * @throws MaksuturvaGatewayException
+     */
+    protected function _processCancelPaymentResponse($response)
+    {
+
+        /** @var Fields for hash calculation $hashFields */
+        $hashFields = array(
+            'pmtc_action',
+            'pmtc_version',
+            'pmtc_sellerid',
+            'pmtc_id',
+            'pmtc_returntext',
+            'pmtc_returncode'
+        );
+
+
+        /** @var Parsed response $parsedResponse */
+        $parsedResponse = $this->_parseResponse($response);
+
+        /** If response was ok, check hash. */
+        if($parsedResponse['pmtc_returncode']=== self::PAYMENT_CANCEL_OK){
+
+            $calcHash = $this->_calculateHash($parsedResponse, $hashFields);
+
+            if($calcHash !== $parsedResponse['pmtc_hash']){
+                Mage::getSingleton('adminhtml/session')->addError(
+                    "The authenticity of the answer could't be verified. Hashes didn't match.
+                     Verify cancel in Maksuturva account and make offline refund, if needed."
+                );
+                throw new MaksuturvaGatewayException(
+                    array("The authenticity of the answer could't be verified. Hashes didn't match."),
+                    self::EXCEPTION_CODE_HASHES_DONT_MATCH
+                );
+            }
+        }
+
+        switch($parsedResponse['pmtc_returncode']){
+
+            case self::PAYMENT_CANCEL_OK:
+                $error = false;
+                break;
+            case self::PAYMENT_CANCEL_NOT_FOUND:
+                $error = true;
+                $msg = "Payment not found";
+                break;
+            case self::PAYMENT_CANCEL_ALREADY_SETTLED:
+                if(Mage::getStoreConfigFlag('payment/maksuturva/can_cancel_settled')){
+                    $error = false;
+                } else {
+                    $error = true;
+                    $msg = "Payment already settled and cannot be cancelled.";
+                }
+                break;
+            case self::PAYMENT_CANCEL_MISMATCH:
+                $error = true;
+                $msg = "Cancel parameters from seller and payer do not match";
+                break;
+            case self::PAYMENT_CANCEL_ERROR:
+                $error = true;
+                $msg = "Errors in input data";
+                if(isset($parsedResponse['errors'])){
+                    $msg .= PHP_EOL;
+                    $msg .= implode(PHP_EOL, $parsedResponse['errors']);
+                }
+                break;
+            case self::PAYMENT_CANCEL_FAILED:
+                $error = true;
+                $msg = "Payment cancellation failed.";
+                if(isset($parsedResponse['pmtc_returntext'])){
+                    $msg .= PHP_EOL . $parsedResponse['pmtc_returntext'];
+                }
+                break;
+            default:
+                $error = true;
+                $msg = "Refund failed";
+                break;
+        }
+
+        /** If canceling failed, throw error */
+        if($error){
+            Mage::getSingleton('adminhtml/session')->addError($msg);
+            throw new MaksuturvaGatewayException(
+                array($msg),
+                $parsedResponse['pmtc_returncode']
+            );
+        }
+
+        return $parsedResponse;
+
+    }
+
+    protected function _parseResponse($response)
+    {
+
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOERROR|LIBXML_NOWARNING);
+        $result = Mage::helper('core')->xmlToAssoc($xml);
+
+        return $result;
+
+    }
+
+    public function _calculateHash($fields, $hashFields)
+    {
+        /** Generate hash */
+        $hashString = '';
+        foreach($hashFields AS $hashField){
+            if(isset($fields[$hashField]) && !empty($fields[$hashField])) {
+                $hashString .= $fields[$hashField] . '&';
+            }
+        }
+        $hashString .= $this->secretKey . '&';
+
+        return strtoupper(hash($this->_hashAlgoDefined, $hashString));
+    }
+
+    public function getTransactionId($payment){
+        return $payment->getParentTransactionId() ? $payment->getParentTransactionId() : $payment->getLastTransId();
     }
 }
 

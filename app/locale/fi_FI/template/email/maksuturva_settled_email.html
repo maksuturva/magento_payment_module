@@ -1,0 +1,50 @@
+<!--@subject Maksutiedot tilauksen #{{order.increment_id}} palauttamiseksi @-->
+<!--@vars
+{"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"var order.increment_id":"Order Id",
+"var creditmemom.increment_id:"Creditmemo Id",
+"var payment_information.payName:"Name of the payment receiver",
+"var payment_information.payIban:"Iban",
+"var payment_information.payReference:"Payment reference",
+"var payment_information.payAmount:"Amount to pay"
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="action-content">
+                        <p>Jotta tilaus #{{ordert.increment_id}} voidaan palauttaa asiakkaalle, täytyy tehdä ensin palautus Maksuturvalle.
+                            Maksuturva palauttaa rahat asiakkaalle saatuaan palautuksen.
+                        </p>
+                        <table cellspacing="0" cellpadding="0" class="message-container">
+                            <tr>
+                                <td>Nimi: </td>
+                                <td>{{var payment_information.payName}}</td>
+                            </tr>
+                            <tr>
+                                <td>IBAN: </td>
+                                <td>{{var payment_information.payIban}}</td>
+                            </tr>
+                            <tr>
+                                <td>Viite: </td>
+                                <td>{{var payment_information.payReference}}</td>
+                            </tr>
+                            <tr>
+                                <td>Summa: </td>
+                                <td>{{var payment_information.payAmount}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

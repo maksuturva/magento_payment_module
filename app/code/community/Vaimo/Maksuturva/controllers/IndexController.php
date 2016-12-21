@@ -295,10 +295,29 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             return false;
         }
 
-        /** @var Mage_Sales_Model_Order_Invoice $invoice */
+        /**
+         * Add transaction info to payment
+         *
+         * @var Mage_Sales_Model_Order_Payment $payment */
+        $payment = $order->getPayment();
+        $payment->setTransactionId($order->getPayment()->getMaksuturvaPmtId())
+            ->setTransactionClosed(0);
+        $order->save();
+
+        /**
+         * Create Invoice
+         *
+         * @var Mage_Sales_Model_Order_Invoice $invoice */
         $invoice = $order->prepareInvoice();
-        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
+        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
         $invoice->register();
+
+        /**
+         * Create transaction
+         */
+        $payment->setCreatedInvoice($invoice);
+        $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $invoice, true);
+
         if ($invoice->canCapture()) {
             $invoice->capture();
         }
