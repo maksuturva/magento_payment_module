@@ -103,7 +103,7 @@ class Vaimo_Maksuturva_Model_Form extends Mage_Core_Model_Abstract
         'pmt_buyercity' => array(1, 40),
         'pmt_buyercountry' => array(1, 2),
         'pmt_buyerphone' => array(0, 40),    // opt
-        'pmt_buyeremail' => array(0, 40),    // opt
+        'pmt_buyeremail' => array(0, 100),    // opt
         'pmt_deliveryname' => array(1, 40),
         'pmt_deliveryaddress' => array(1, 40),
         'pmt_deliverypostalcode' => array(1, 5),

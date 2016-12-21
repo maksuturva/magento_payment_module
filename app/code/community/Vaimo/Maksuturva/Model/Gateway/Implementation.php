@@ -81,10 +81,10 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
                     'pmt_row_type' => 1,
                 );
 
-                //CONFIGURABLE PRODUCT - PARENT
-                //copies child's name, shortdescription and SKU as parent's
-
                 if ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE && $item->getChildrenItems() != null && sizeof($item->getChildrenItems()) > 0) {
+                    //CONFIGURABLE PRODUCT - PARENT
+                    //copies child's name, shortdescription and SKU as parent's
+
                     $children = $item->getChildrenItems();
 
                     if (sizeof($children) != 1) {
@@ -113,32 +113,29 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
                     }
                     $totalAmount += $itemData["price_incl_tax"] * $item->getQtyToInvoice();
 
-                }
+                } elseif ($item->getParentItem() != null && $item->getParentItem()->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                    //CONFIGURABLE PRODUCT - CHILD
+                    //as child's information already copied to parent's row, no child row is displayed
 
-                //CONFIGURABLE PRODUCT - CHILD
-                //as child's information already copied to parent's row, no child row is displayed
-
-                else if ($item->getParentItem() != null && $item->getParentItem()->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
                     continue;
-                }
-                //BUNDLED PRODUCT - PARENT
-                //bundled product parents won't be charged in invoice so unline other products, the quantity is fetched from qtyOrdered,
-                //price will be nullified as the prices are available in children
 
-                else if ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $item->getChildrenItems() != null && sizeof($item->getChildrenItems()) > 0) {
+                } elseif ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE && $item->getChildrenItems() != null && sizeof($item->getChildrenItems()) > 0) {
+                    //BUNDLED PRODUCT - PARENT
+                    //bundled product parents won't be charged in invoice so unline other products, the quantity is fetched from qtyOrdered,
+                    //price will be nullified as the prices are available in children
+
                     $row['pmt_row_quantity'] = str_replace('.', ',', sprintf("%.2f", $item->getQtyOrdered()));
-                    if ($item->getProduct()->getPriceType() == 0) { //if price is fully dynamic
+                    if ($item->getProduct()->getPriceType() == Mage_Bundle_Model_Product_Price::PRICE_TYPE_DYNAMIC) {
                         $row['pmt_row_price_net'] = str_replace('.', ',', sprintf("%.2f", '0'));
                     } else {
                         $totalAmount += $itemData["price_incl_tax"] * $item->getQtyOrdered();
                     }
                     $row['pmt_row_type'] = 4; //mark product as tailored product
-                }
 
-                //BUNDLED PRODUCT - CHILD
-                //the quantity information with parent's quantity is added to child's description
+                } elseif ($item->getParentItem() != null && $item->getParentItem()->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+                    //BUNDLED PRODUCT - CHILD
+                    //the quantity information with parent's quantity is added to child's description
 
-                else if ($item->getParentItem() != null && $item->getParentItem()->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
                     $parentQty = $item->getParentItem()->getQtyOrdered();
 
                     if (intval($parentQty, 10) == $parentQty) {
@@ -156,8 +153,9 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
                     $totalAmount += $itemData["price_incl_tax"] * $item->getQtyOrdered();
                     $row['pmt_row_type'] = 4; //mark product as taloired product - by default not returnable
 
-                } //SIMPLE OR GROUPED PRODUCT
-                else {
+                } else {
+                    //SIMPLE OR GROUPED PRODUCT
+
                     $totalAmount += $itemData["price_incl_tax"] * $item->getQtyToInvoice();
                 }
                 array_push($products_rows, $row);
