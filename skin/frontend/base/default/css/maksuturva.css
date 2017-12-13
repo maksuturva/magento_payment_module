@@ -45,3 +45,7 @@
     -o-transform: translate3D(-50%, -50%, 0);
     transform: translate3D(-50%, -50%, 0);
 }
+
+#payment_form_maksuturva .maksuturva-method-discount {
+    font-weight: 600;
+}

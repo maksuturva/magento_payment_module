@@ -64,6 +64,10 @@ Specifies which styling is used on preselection form on checkout. Option to use 
 
 Only supported when preselect payment method in webshop is enabled. Currently requires module Vaimo_PaymentFee, this might change to more generic way in future versions.
 
+###### Payment method discounts
+
+Payment method specific discounts. Only percentage discount is supported currently.
+
 ##### Delayed capture methods
 
 In case part payment or invoice payment methods are used, this can be used to specify delayed capture for these methods.

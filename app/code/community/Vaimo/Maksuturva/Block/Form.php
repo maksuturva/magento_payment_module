@@ -40,6 +40,47 @@ class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
         }
     }
 
+    /**
+     * Get display name including discount
+     * @param array $method
+     *
+     * @return string
+     */
+    public function getMethodDisplayName($method)
+    {
+        $discountAmount = $this->getMethodDiscount($method->code);
+
+        $displayName = $method->displayname;
+
+        if ($discountAmount > 0) {
+            $displayName .= ' (-' . $discountAmount . '%)';
+        }
+        return $displayName;
+    }
+
+    /**
+     * E.g. -10.5%
+     *
+     * @param array $method
+     *
+     * @return string
+     */
+    public function getFormattedDiscount($method)
+    {
+        $amount = $this->getMethodDiscount($method->code);
+
+        if ($amount <= 0) {
+            return '';
+        }
+        return '-' . $amount . '%';
+    }
+
+    protected function getMethodDiscount($code)
+    {
+        $discount = Mage::getModel('maksuturva/discount');
+        return $discount->getMethodDiscount($code);
+    }
+
     public function getPaymentMethods()
     {
         return $this->getMethod()->getPaymentMethods();

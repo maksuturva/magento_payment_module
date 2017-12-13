@@ -38,3 +38,4 @@
 "Your order is already paid.","Tilauksesi on jo maksettu."
 "Your order is not valid.","Tilaustasi ei ole olemassa."
 "Send refund money to<br/><br/>Name: %s<br/>IBAN: %s<br/>Reference: %s<br/>Amount: %s<br/><br/>Maksuturva will refund the payer after receiving money.","Lähetä palautettava raha seuraavalle tilille<br/><br/>Nimi: %s<br/>IBAN: %s<br/>Viite: %s<br/>Määrä: %s<br/><br/>Maksuturva hyvittää maksajalle saatuaan rahat."
+"Payment method discounts","Maksutapa-alennukset"

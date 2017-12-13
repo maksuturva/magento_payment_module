@@ -12,6 +12,7 @@
             <codePool>community</codePool>
             <depends>
                 <Mage_Payment />
+                <Mage_SalesRule />
             </depends>
         </Vaimo_Maksuturva>
     </modules>

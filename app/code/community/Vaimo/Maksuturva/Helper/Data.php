@@ -44,5 +44,4 @@ class Vaimo_Maksuturva_Helper_Data extends Mage_Core_Helper_Abstract
     public function getSettledEmailTemplate(){
         return Mage::getStoreConfig(self::CONFIG_CAN_SETTLED_TEMPLATE);
     }
-
 }

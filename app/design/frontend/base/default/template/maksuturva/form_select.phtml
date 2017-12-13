@@ -20,7 +20,7 @@ $selectedMethod = $this->getSelectedMethod();
                     <option value=""><?php echo __("Choose payment method..."); ?></option>
                     <?php foreach ($paymentMethods as $method): ?>
                         <option
-                            value="<?php echo $method->code ?>" <?php echo $method->code == $selectedMethod ? 'selected' : '' ?>><?php echo $method->displayname; ?></option>
+                            value="<?php echo $method->code ?>" <?php echo $method->code == $selectedMethod ? 'selected' : '' ?>><?php echo $this->getMethodDisplayName($method); ?></option>
                     <?php endforeach ?>
                 </select>
             </li>
@@ -35,4 +35,5 @@ $selectedMethod = $this->getSelectedMethod();
             });
         </script>
     <?php endif ?>
+
 <?php endif ?>

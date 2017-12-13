@@ -21,6 +21,11 @@
             <maksuturva>
                 <class>Vaimo_Maksuturva_Model</class>
             </maksuturva>
+            <salesrule>
+                <rewrite>
+                    <quote_discount>Vaimo_Maksuturva_Model_Discount</quote_discount>
+                </rewrite>
+            </salesrule>
         </models>
         <helpers>
             <maksuturva>
@@ -125,6 +130,7 @@
                 <sandboxmode>1</sandboxmode>
                 <preselect_payment_method>0</preselect_payment_method>
                 <preselect_paymentfee/>
+                <method_discounts/>
                 <cron_active>0</cron_active>
                 <test_sellerid>testikauppias</test_sellerid>
                 <test_secretkey>11223344556677889900</test_secretkey>

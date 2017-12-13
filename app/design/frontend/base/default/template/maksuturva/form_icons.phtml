@@ -19,6 +19,9 @@ $selectedMethod = $this->getSelectedMethod();
                 <li class="payment-method">
                     <label for="maksuturva_<?php echo $method->code ?>">
                         <img src="<?php echo $method->imageurl ?>" alt="<?php echo $method->displayname ?>"/>
+                        <?php if ($discount = $this->getFormattedDiscount($method)): ?>
+                            <span class="maksuturva-method-discount"><?php echo $discount; ?></span>
+                        <?php endif; ?>
                     </label>
                     <div class="input-wrapper">
                         <input type="radio" class="radio maksuturva-radio" id="maksuturva_<?php echo $method->code ?>"

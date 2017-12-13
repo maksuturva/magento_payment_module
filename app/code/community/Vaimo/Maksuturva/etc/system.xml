@@ -151,6 +151,15 @@
                                 <preselect_payment_method>1</preselect_payment_method>
                             </depends>
                         </preselect_paymentfee>
+                        <method_discounts translate="label">
+                            <label>Payment method discounts</label>
+                            <comment><![CDATA[When using payment method preselection, custom percentage discount for payment methods can be applied here. Format is: code1=discount,code2=discount</br>Example for resurs bank invoice: RBIN=10.0</br>]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </method_discounts>
                         <delayed_capture>
                             <label>Delayed capture methods</label>
                             <comment><![CDATA[When using Maksuturva payment methods supporting delayed capture (ie. shipment notices), those methods can be specified here. These methods must be verified from Maksuturva. Format is: code1,code2]]></comment>
