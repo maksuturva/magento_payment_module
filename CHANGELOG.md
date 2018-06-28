@@ -1,5 +1,13 @@
 # Change Log
 
+### 2.3.2
+
+  * Fix issue with payment being always classified as delayed when payment method preselection is not enabled
+
+### 2.3.1
+
+  * Fix issue with copyright character
+
 ### 2.3.0
 
   * Changed the requested captures case to be online for all captures to allow online refunding.

@@ -272,7 +272,12 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
     public function isDelayedCaptureCase($method)
     {
         $delayedMethods = $this->getConfigData('delayed_capture');
-        $delayedMethods = explode(',', $delayedMethods);
+        if (strlen($delayedMethods) > 0) {
+            $delayedMethods = explode(',', $delayedMethods);
+        } else {
+            $delayedMethods = array();
+        }
+
 
         return in_array($method, $delayedMethods);
     }
@@ -284,7 +289,11 @@ class Vaimo_Maksuturva_Model_Maksuturva extends Mage_Payment_Model_Method_Abstra
         }
 
         $additional_data = unserialize($payment->getAdditionalData());
-        $method = $additional_data[self::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD];
+        if (isset($additional_data[self::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD])) {
+            $method = $additional_data[self::MAKSUTURVA_PRESELECTED_PAYMENT_METHOD];
+        } else {
+            $method = null;
+        }
 
         if ($this->isDelayedCaptureCase($method)) {
             $result = $this->getGatewayImplementation()->addDeliveryInfo($payment);

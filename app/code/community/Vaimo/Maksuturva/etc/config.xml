@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!--
 /**
- * Copyright © 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
+ * Copyright 2016 Vaimo Finland Oy, Suomen Maksuturva Oy
  * See LICENSE.txt for license details.
  */
  -->
@@ -45,7 +45,7 @@
         </resources>
         <template>
             <email>
-                <payment_maksuturva_settled_email_template translate="label" module="Vaimo_Maksuturva">
+                <payment_maksuturva_settled_email_template translate="label" module="maksuturva">
                     <label>Maksuturva Cancel Settled Payment</label>
                     <file>maksuturva_settled_email.html</file>
                     <type>html</type>
