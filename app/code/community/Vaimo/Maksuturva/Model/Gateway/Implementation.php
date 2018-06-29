@@ -631,6 +631,8 @@ class Vaimo_Maksuturva_Model_Gateway_Implementation extends Vaimo_Maksuturva_Mod
 
         switch ($resultCode) {
             case self::MAKSUTURVA_PKG_RESULT_SUCCESS:
+            case self::MAKSUTURVA_PKG_RESULT_EXISTING_PKG:
+            case self::MAKSUTURVA_PKG_RESULT_FORCED_UPDATE_REQUIRED:
                 return array('pkg_resultcode' => $resultCode, 'pkg_id' => (string)$xml->pkg_id, 'pkg_resulttext' => (string)$xml->pkg_resulttext);
             default:
                 Mage::throwException("Error on Maksuturva pkg creation: " . (string)$xml->pkg_resulttext);

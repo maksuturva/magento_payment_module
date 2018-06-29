@@ -1,5 +1,9 @@
 # Change Log
 
+### 2.3.3
+
+  * Allow capture to continue in case of existing delivery info in the API
+
 ### 2.3.2
 
   * Fix issue with payment being always classified as delayed when payment method preselection is not enabled
