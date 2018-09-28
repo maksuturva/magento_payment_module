@@ -48,18 +48,19 @@ class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
      */
     public function getMethodDisplayName($method)
     {
-        $discountAmount = $this->getMethodDiscount($method->code);
-
         $displayName = $method->displayname;
 
-        if ($discountAmount > 0) {
-            $displayName .= ' (-' . $discountAmount . '%)';
+        $discountStr = $this->getFormattedDiscount($method);
+
+        if ($discountStr) {
+            $displayName .= ' (' . $discountStr . ')';
         }
+
         return $displayName;
     }
 
     /**
-     * E.g. -10.5%
+     * E.g. "-10.5%" or "-50€"
      *
      * @param array $method
      *
@@ -67,17 +68,43 @@ class Vaimo_Maksuturva_Block_Form extends Mage_Payment_Block_Form
      */
     public function getFormattedDiscount($method)
     {
-        $amount = $this->getMethodDiscount($method->code);
+        $formattedDiscount = '';
 
-        if ($amount <= 0) {
-            return '';
+        $discountData = $this->getMethodDiscount($method->code);
+
+        if (isset($discountData['amount']) && isset($discountData['type'])) {
+            $discountAmount = $discountData['amount'];
+            $discountType = $discountData['type'];
+
+            $unit = null;
+
+            switch ($discountType) {
+                case Mage_SalesRule_Model_Rule::BY_PERCENT_ACTION:
+                case Mage_SalesRule_Model_Rule::TO_PERCENT_ACTION:
+                    $unit = '%';
+                    break;
+                case Mage_SalesRule_Model_Rule::BY_FIXED_ACTION:
+                case Mage_SalesRule_Model_Rule::CART_FIXED_ACTION:
+                case Mage_SalesRule_Model_Rule::TO_FIXED_ACTION:
+                    $unit = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+                    break;
+            }
+
+            if (!empty($discountAmount) && !empty($discountType)) {
+                if ((int)$discountAmount == $discountAmount) {
+                    $discountAmount = number_format($discountAmount);
+                } else {
+                    $discountAmount = number_format($discountAmount, 2);
+                }
+                $formattedDiscount = sprintf('-%s%s', $discountAmount, $unit);
+            }
         }
-        return '-' . $amount . '%';
+        return $formattedDiscount;
     }
 
     protected function getMethodDiscount($code)
     {
-        $discount = Mage::getModel('maksuturva/discount');
+        $discount = Mage::getSingleton('maksuturva/discount');
         return $discount->getMethodDiscount($code);
     }
 

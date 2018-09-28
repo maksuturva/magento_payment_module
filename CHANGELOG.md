@@ -1,5 +1,13 @@
 # Change Log
 
+### 2.5.0
+
+  * Payment method discounts using Magento shopping cart rules, this replaces old configuration from 2.4.0
+
+### 2.4.0
+  
+  * Payment method percentage discounts
+  
 ### 2.3.3
 
   * Allow capture to continue in case of existing delivery info in the API

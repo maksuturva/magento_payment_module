@@ -64,10 +64,6 @@ Specifies which styling is used on preselection form on checkout. Option to use 
 
 Only supported when preselect payment method in webshop is enabled. Currently requires module Vaimo_PaymentFee, this might change to more generic way in future versions.
 
-###### Payment method discounts
-
-Payment method specific discounts. Only percentage discount is supported currently.
-
 ##### Delayed capture methods
 
 In case part payment or invoice payment methods are used, this can be used to specify delayed capture for these methods.
@@ -182,6 +178,12 @@ Splitting of methods requires applying supplied patch under optional/patches/get
 to return selected sub-method code (eg. maksuturva_fi50 instead of just maksuturva). The patch handles the use-case when user goes back on checkout
 steps, otherwise the selected sub-method would stay selected. This assumes all methods are split off from default
 selection. If this is not the case, the patch needs modification to filter the codes split off.
+
+### Payment method specific discounts
+
+When using payment method preselection, method specific discount can be configured in shopping cart rules of Magento admin.
+Discount from the method is visible on frontend when choosing Maksuturva payment method.
+
 
 ## Contribution guidelines
 

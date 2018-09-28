@@ -23,7 +23,7 @@
             </maksuturva>
             <salesrule>
                 <rewrite>
-                    <quote_discount>Vaimo_Maksuturva_Model_Discount</quote_discount>
+                    <rule_condition_address>Vaimo_Maksuturva_Model_Rule_Condition_Address</rule_condition_address>
                 </rewrite>
             </salesrule>
         </models>
