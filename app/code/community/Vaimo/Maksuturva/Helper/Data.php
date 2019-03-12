@@ -14,7 +14,6 @@ class Vaimo_Maksuturva_Helper_Data extends Mage_Core_Helper_Abstract
     const CONFIG_CAN_SETTLED_RECIPIENT = "payment/maksuturva/settled_recipient_email";
     const CONFIG_CAN_SETTLED_TEMPLATE = "payment/maksuturva/settled_email_template";
 
-
     /**
      * Generate random pmt_id string
      *
@@ -25,23 +24,57 @@ class Vaimo_Maksuturva_Helper_Data extends Mage_Core_Helper_Abstract
         return sprintf('%04x%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
     }
 
-    public function canCancelSettled(){
+    public function canCancelSettled()
+    {
         return Mage::getStoreConfigFlag(self::CONFIG_CAN_CANCEL_SETTLED);
     }
 
-    public function canSendMaksuturvaPaymentInformation(){
+    public function canSendMaksuturvaPaymentInformation()
+    {
         return Mage::getStoreConfigFlag(self::CONFIG_ENABLE_SETTLED_EMAIL);
     }
 
-    public function getSettledEmailSender(){
+    public function getSettledEmailSender()
+    {
         return Mage::getStoreConfig(self::CONFIG_CAN_SETTLED_SENDER);
     }
 
-    public function getSettledEmailRecipient(){
+    public function getSettledEmailRecipient()
+    {
         return Mage::getStoreConfig(self::CONFIG_CAN_SETTLED_RECIPIENT);
     }
 
-    public function getSettledEmailTemplate(){
+    public function getSettledEmailTemplate()
+    {
         return Mage::getStoreConfig(self::CONFIG_CAN_SETTLED_TEMPLATE);
+    }
+
+    /**
+     * Restore quote after cancelled or failed payment.
+     *
+     * @param Mage_Sales_Model_Order $order
+     */
+    public function restoreQuote($order)
+    {
+        if ($order->getId()) {
+            $quote = $this->getQuote($order->getQuoteId());
+            if ($quote->getId()) {
+                $quote->setIsActive(1)
+                    ->setReservedOrderId(null)
+                    ->save();
+                Mage::getSingleton('checkout/session')->replaceQuote($quote)
+                    ->unsLastRealOrderId();
+            }
+        }
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Mage_Sales_Model_Quote
+     */
+    protected function getQuote($id)
+    {
+        return Mage::getModel('sales/quote')->load($id);
     }
 }

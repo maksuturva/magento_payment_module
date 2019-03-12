@@ -1,5 +1,9 @@
 # Change Log
 
+### 2.6.0
+
+  * When payment is cancelled or has an error, customer's shopping cart is retained and the customer is returned to the cart page, when possible
+
 ### 2.5.0
 
   * Payment method discounts using Magento shopping cart rules, this replaces old configuration from 2.4.0
