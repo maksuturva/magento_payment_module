@@ -171,7 +171,7 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
 
         if (empty($incrementId) || empty($pmt_id)) {
             $session->addError($this->__('Unknown error on maksuturva payment module.'));
-            $this->_redirect('checkout/cart');
+            $this->_redirect('checkout/onepage/failure');
             return;
         }
 
@@ -180,6 +180,7 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
         $additional_data = unserialize($payment->getAdditionalData());
         // received pmt_id must always match to pmt_id on payment
         if ($additional_data[Vaimo_Maksuturva_Model_Maksuturva::MAKSUTURVA_TRANSACTION_ID] !== $pmt_id) {
+            Mage::helper('maksuturva')->restoreQuote($order);
             $this->_redirect('checkout/cart');
             return;
         }
@@ -189,15 +190,18 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             $order->cancel();
             $order->addStatusHistoryComment($this->__('Payment canceled on Maksuturva'), 'pay_aborted');
             $order->save();
+            Mage::helper('maksuturva')->restoreQuote($order);
 
             $session->addError($this->__('You have cancelled your payment on Maksuturva.'));
         } else {
             $session->addError($this->__('Unable cancel order that is already paid.'));
-            $this->_redirect('checkout/cart');
+            // Do not restore cart for an already paid order.
+            $this->_redirect('checkout/onepage/failure');
             return;
         }
 
-        $this->_redirect('checkout/onepage/failure');
+        Mage::helper('maksuturva')->restoreQuote($order);
+        $this->_redirect('checkout/cart');
     }
 
     /**
@@ -212,11 +216,14 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
 
         if (empty($incrementId) || empty($pmt_id)) {
             $session->addError($this->__('Unknown error on maksuturva payment module.'));
-            $this->_redirect('checkout/cart');
+            $this->_redirect('checkout/onepage/failure');
             return;
         }
 
         $order->loadByIncrementId($incrementId);
+        // Always restore cart, regardless of error type.
+        Mage::helper('maksuturva')->restoreQuote($order);
+
         $payment = $order->getPayment();
         $additional_data = unserialize($payment->getAdditionalData());
 
@@ -262,7 +269,7 @@ class Vaimo_Maksuturva_IndexController extends Mage_Core_Controller_Front_Action
             }
 
             $order->save();
-            $this->_redirect('checkout/onepage/failure');
+            $this->_redirect('checkout/cart');
             return;
         }
 
